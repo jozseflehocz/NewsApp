@@ -37,8 +37,8 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
 
     private String author;
     private String title;
-    private String locationParts[];
-    private String location;
+    private String section;
+    //private String location;
 
     /**
      * This is our own custom constructor (it doesn't mirror a superclass constructor).
@@ -54,45 +54,6 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         // Because this is a custom adapter for two TextViews and an ImageView, the adapter is not
         // going to use this second argument, so it can be any value. Here, we used 0.
         super(context, 0, articles);
-    }
-
-    private int getMagnitudeColor(double magnitude) {
-        int magnitudeColorResourceId;
-        int magnitudeFloor = (int) Math.floor(magnitude);
-        switch (magnitudeFloor) {
-            case 0:
-            case 1:
-                magnitudeColorResourceId = R.color.magnitude1;
-                break;
-            case 2:
-                magnitudeColorResourceId = R.color.magnitude2;
-                break;
-            case 3:
-                magnitudeColorResourceId = R.color.magnitude3;
-                break;
-            case 4:
-                magnitudeColorResourceId = R.color.magnitude4;
-                break;
-            case 5:
-                magnitudeColorResourceId = R.color.magnitude5;
-                break;
-            case 6:
-                magnitudeColorResourceId = R.color.magnitude6;
-                break;
-            case 7:
-                magnitudeColorResourceId = R.color.magnitude7;
-                break;
-            case 8:
-                magnitudeColorResourceId = R.color.magnitude8;
-                break;
-            case 9:
-                magnitudeColorResourceId = R.color.magnitude9;
-                break;
-            default:
-                magnitudeColorResourceId = R.color.magnitude10plus;
-                break;
-        }
-        return ContextCompat.getColor(getContext(), magnitudeColorResourceId);
     }
 
 
@@ -116,64 +77,25 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
 
 
         // Get the {@link AndroidFlavor} object located at this position in the list
-        Article currentEarthQuake = getItem(position);
+        Article currentArticle = getItem(position);
 
         // Find the TextView in the list_item.xml layout with the ID version_name
-        TextView magnitudeTextView = (TextView) listItemView.findViewById(R.id.section);
+        TextView sectionTextView = (TextView) listItemView.findViewById(R.id.section);
         // Get the version name from the current AndroidFlavor object and
         // set this text on the name TextView
-
-        String pattern = "0.0";
-        DecimalFormat decimalFormat = new DecimalFormat(pattern);
-
-        String format = decimalFormat.format(currentEarthQuake.getMagnitude());
-
-
-        magnitudeTextView.setText(format);
-
-        location=currentEarthQuake.getLocation();
-        author ="Near by";
-        if (location.contains(",")){
-            locationParts=location.split("of");
-            author =locationParts[0]+" of";
-            title =locationParts[1];
-        }
-
-        // Set the proper background color on the section circle.
-        // Fetch the background from the TextView, which is a GradientDrawable.
-        GradientDrawable magnitudeCircle = (GradientDrawable) magnitudeTextView.getBackground();
-
-        // Get the appropriate background color based on the current earthquake section
-        int magnitudeColor = getMagnitudeColor(currentEarthQuake.getMagnitude());
-
-        // Set the color on the section circle
-        magnitudeCircle.setColor(magnitudeColor);
-
-
+        sectionTextView.setText((CharSequence) currentArticle.getSection());
 
         // Find the TextView in the list_item.xml layout with the ID version_name
-        TextView locationOffsetTextView = (TextView) listItemView.findViewById(R.id.author);
+        TextView titleTextView = (TextView) listItemView.findViewById(R.id.title);
         // Get the version name from the current AndroidFlavor object and
         // set this text on the name TextView
-        locationOffsetTextView.setText(author);
-
-        // Find the TextView in the list_item.xml layout with the ID version_name
-        TextView primaryLocationTextView = (TextView) listItemView.findViewById(R.id.title);
-        // Get the version name from the current AndroidFlavor object and
-        // set this text on the name TextView
-        primaryLocationTextView.setText(title);
+        titleTextView.setText((CharSequence) currentArticle.getTitle());
 
         // Find the TextView in the list_item.xml layout with the ID version_name
         TextView dateTextView = (TextView) listItemView.findViewById(R.id.publication_date);
         // Get the version name from the current AndroidFlavor object and
         // set this text on the name TextView
-        dateTextView.setText(currentEarthQuake.getDateToDisplay());
-
-        // Find the TextView in the list_item.xml layout with the ID version_name
-        TextView timeTextView = (TextView) listItemView.findViewById(R.id.publication_time);
-        // Get the version name from the current AndroidFlavor object and
-        // set this text on the name TextView
-        timeTextView.setText(currentEarthQuake.getTimeToDisplay());
+        dateTextView.setText(currentArticle.getWebPublicationDate());
 
         // Return the whole list item layout (containing 2 TextViews and an ImageView)
         // so that it can be shown in the ListView

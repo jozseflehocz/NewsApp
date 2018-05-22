@@ -114,9 +114,9 @@ public final class QueryUtils {
      * Return a list of {@link Article} objects that has been built up from
      * parsing the given JSON response.
      */
-    private static List<Article> extractFeatureFromJson(String earthquakeJSON) {
+    private static List<Article> extractFeatureFromJson(String articleJSON) {
         // If the JSON string is empty or null, then return early.
-        if (TextUtils.isEmpty(earthquakeJSON)) {
+        if (TextUtils.isEmpty(articleJSON)) {
             return null;
         }
 
@@ -129,38 +129,44 @@ public final class QueryUtils {
         try {
 
             // Create a JSONObject from the JSON response string
-            JSONObject baseJsonResponse = new JSONObject(earthquakeJSON);
+            JSONObject baseJsonResponse = new JSONObject(articleJSON);
+
+            Log.i("extractFeatureFromJson", baseJsonResponse.toString());
+
+            JSONObject properties = baseJsonResponse.getJSONObject("response");
 
             // Extract the JSONArray associated with the key called "features",
             // which represents a list of features (or articles).
-            JSONArray earthquakeArray = baseJsonResponse.getJSONArray("features");
+            JSONArray articleArray = properties.getJSONArray("results");
 
-            // For each earthquake in the earthquakeArray, create an {@link Article} object
-            for (int i = 0; i < earthquakeArray.length(); i++) {
+            Log.i("articleArray.length()", String.valueOf(articleArray.length()));
+
+            // For each earthquake in the articleArray, create an {@link Article} object
+            for (int i = 0; i < articleArray.length(); i++) {
 
                 // Get a single article at position i within the list of articles
-                JSONObject currentEarthquake = earthquakeArray.getJSONObject(i);
+                JSONObject currentArticle = articleArray.getJSONObject(i);
 
                 // For a given article, extract the JSONObject associated with the
                 // key called "properties", which represents a list of all properties
                 // for that article.
-                JSONObject properties = currentEarthquake.getJSONObject("properties");
+                //JSONObject properties = currentArticle.getJSONObject("results");
 
                 // Extract the value for the key called "mag"
-                double magnitude = properties.getDouble("mag");
+                String section = currentArticle.getString("sectionName");
 
                 // Extract the value for the key called "place"
-                String location = properties.getString("place");
+                String title = currentArticle.getString("webTitle");
 
                 // Extract the value for the key called "time"
-                long time = properties.getLong("time");
+                String time = currentArticle.getString("webPublicationDate");
 
                 // Extract the value for the key called "url"
-                String url = properties.getString("url");
+                String url = currentArticle.getString("webUrl");
 
-                // Create a new {@link Article} object with the magnitude, location, time,
+                // Create a new {@link Article} object with the section, title, time,
                 // and url from the JSON response.
-                Article article = new Article(magnitude, location, time, url);
+                Article article = new Article(section, title, time, url);
 
                 // Add the new {@link Article} to the list of articles.
                 articles.add(article);
