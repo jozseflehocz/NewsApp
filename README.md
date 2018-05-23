@@ -5,18 +5,9 @@ News feed app which gives a user regularly-updated news from the internet relate
 
 https://open-platform.theguardian.com/documentation/
 
-Pre-requisites
---------------
-
-- Android SDK v23
-- Android Build Tools v23.0.2
-- Android Support Repository v23.3.0
-
-Getting Started
----------------
-
-This sample uses the Gradle build system. To build this project, use the
-"gradlew build" command or use "Import Project" in Android Studio.
+Screenshots
+-------
+https://github.com/jozseflehocz/NewsApp/wiki
 
 License
 -------
