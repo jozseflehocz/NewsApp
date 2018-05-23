@@ -36,35 +36,31 @@ import java.util.List;
 public class ArticleActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Article>> {
 
     public static final String LOG_TAG = ArticleActivity.class.getName();
+    private static final int ARTICLE_LOADER_ID = 1;
 
     /**
-     * Constant value for the earthquake loader ID. We can choose any integer.
-     * This really only comes into play if you're using multiple loaders.
+     * URL for article data from the website
      */
-    private static final int EARTHQUAKE_LOADER_ID = 1;
+    private static final String ARTICLES_URL =
+            "https://content.guardianapis.com/search?q=android&api-key=test";
 
     /**
-     * URL for earthquake data from the USGS dataset
-     */
-    private static final String USGS_REQUEST_URL =
-            "https://content.guardianapis.com/search?q=debate&tag=politics/politics&from-date=2014-01-01&api-key=test";
-
-    /**
-     * Adapter for the list of earthquakes
+     * Adapter for the list of articles
      */
     private ArticleAdapter mAdapter;
 
-    /** TextView that is displayed when the list is empty */
+    /**
+     * TextView that is displayed when the list is empty
+     */
     private TextView mEmptyStateTextView;
 
     private ProgressBar mProgressBar;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(this.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(this.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
@@ -75,7 +71,8 @@ public class ArticleActivity extends AppCompatActivity implements LoaderManager.
         // Find a reference to the {@link ListView} in the layout
         ListView articleListView = (ListView) findViewById(R.id.list);
 
-        mEmptyStateTextView=(TextView) findViewById(R.id.empty_view);
+        // View for empty list
+        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         articleListView.setEmptyView(mEmptyStateTextView);
 
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
@@ -88,7 +85,7 @@ public class ArticleActivity extends AppCompatActivity implements LoaderManager.
         articleListView.setAdapter(mAdapter);
 
         // Set an item click listener on the ListView, which sends an intent to a web browser
-        // to open a website with more information about the selected earthquake.
+        // to open a website with more information about the selected article.
         articleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -105,9 +102,7 @@ public class ArticleActivity extends AppCompatActivity implements LoaderManager.
                 startActivity(websiteIntent);
             }
         });
-        // Start the AsyncTask to fetch the earthquake data
-        //EarthquakeAsyncTask task = new EarthquakeAsyncTask();
-        //task.execute(USGS_REQUEST_URL);
+
         // Get a reference to the LoaderManager, in order to interact with loaders.
         LoaderManager loaderManager = getLoaderManager();
 
@@ -115,22 +110,29 @@ public class ArticleActivity extends AppCompatActivity implements LoaderManager.
         // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
         // because this activity implements the LoaderCallbacks interface).
 
-        Log.v("onCreate", "loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);");
-        loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        Log.v("onCreate", "loaderManager.initLoader(ARTICLE_LOADER_ID, null, this);");
+        if (isConnected) {
+            loaderManager.initLoader(ARTICLE_LOADER_ID, null, this);
+        } else {
+            mEmptyStateTextView.setText(R.string.no_internet_connection);
+            mProgressBar.setVisibility(View.GONE);
+        }
+
+
     }
 
     @Override
     public Loader<List<Article>> onCreateLoader(int i, Bundle bundle) {
         // Create a new loader for the given URL
-        Log.v("Loader onCreateLoader", "new ArticleLoader(this, USGS_REQUEST_URL)");
-        return new ArticleLoader(this, USGS_REQUEST_URL);
+        Log.v("Loader onCreateLoader", "new ArticleLoader(this, ARTICLES_URL)");
+        return new ArticleLoader(this, ARTICLES_URL);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Article>> loader, List<Article> articles) {
 
         // Set empty state text to display "No articles found."
-        mEmptyStateTextView.setText(R.string.no_earthquakes);
+        mEmptyStateTextView.setText(R.string.no_articles);
 
         // Clear the adapter of previous earthquake data
         Log.v("onLoadFinished loader", "mAdapter.clear();");
@@ -140,8 +142,6 @@ public class ArticleActivity extends AppCompatActivity implements LoaderManager.
         // data set. This will trigger the ListView to update.
         if (articles != null && !articles.isEmpty()) {
             mAdapter.addAll(articles);
-        }else{
-            mEmptyStateTextView.setText(R.string.no_internet_connection);
         }
         mProgressBar.setVisibility(View.GONE);
     }

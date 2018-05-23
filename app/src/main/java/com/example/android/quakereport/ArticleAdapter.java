@@ -16,16 +16,13 @@
 package com.example.android.quakereport;
 
 import android.app.Activity;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import android.graphics.drawable.GradientDrawable;
+import java.util.List;
 
 /*
  * {@link AndroidFlavorAdapter} is an {@link ArrayAdapter} that can provide the layout for each list
@@ -33,29 +30,19 @@ import android.graphics.drawable.GradientDrawable;
  * */
 public class ArticleAdapter extends ArrayAdapter<Article> {
 
-    private static final String LOG_TAG = ArticleAdapter.class.getSimpleName();
-
-    private String author;
-    private String title;
-    private String section;
-    //private String location;
-
     /**
-     * This is our own custom constructor (it doesn't mirror a superclass constructor).
      * The context is used to inflate the layout file, and the list is the data we want
      * to populate into the lists.
-     *
-     * @param context        The current context. Used to inflate the layout file.
+     *  @param context        The current context. Used to inflate the layout file.
      * @param articles A List of Article objects to display in a list
      */
-    public ArticleAdapter(Activity context, ArrayList<Article> articles) {
+    public ArticleAdapter(Activity context, List<Article> articles) {
         // Here, we initialize the ArrayAdapter's internal storage for the context and the list.
         // the second argument is used when the ArrayAdapter is populating a single TextView.
         // Because this is a custom adapter for two TextViews and an ImageView, the adapter is not
         // going to use this second argument, so it can be any value. Here, we used 0.
         super(context, 0, articles);
     }
-
 
     /**
      * Provides a view for an AdapterView (ListView, GridView, etc.)
@@ -79,27 +66,34 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         // Get the {@link AndroidFlavor} object located at this position in the list
         Article currentArticle = getItem(position);
 
-        // Find the TextView in the list_item.xml layout with the ID version_name
+        // Find the TextView in the list_item.xml layout with the ID section
         TextView sectionTextView = (TextView) listItemView.findViewById(R.id.section);
-        // Get the version name from the current AndroidFlavor object and
-        // set this text on the name TextView
+        // Get the section name from the current AndroidFlavor object and
+        // set this text on the section TextView
         sectionTextView.setText((CharSequence) currentArticle.getSection());
 
-        // Find the TextView in the list_item.xml layout with the ID version_name
+        // Find the TextView in the list_item.xml layout with the ID title
         TextView titleTextView = (TextView) listItemView.findViewById(R.id.title);
-        // Get the version name from the current AndroidFlavor object and
-        // set this text on the name TextView
+        // Get the title from the current AndroidFlavor object and
+        // set this text on the title TextView
         titleTextView.setText((CharSequence) currentArticle.getTitle());
 
-        // Find the TextView in the list_item.xml layout with the ID version_name
-        TextView dateTextView = (TextView) listItemView.findViewById(R.id.publication_date);
-        // Get the version name from the current AndroidFlavor object and
-        // set this text on the name TextView
-        dateTextView.setText(currentArticle.getWebPublicationDate());
 
-        // Return the whole list item layout (containing 2 TextViews and an ImageView)
+        // Get the publication date from the current AndroidFlavor object
+        String webPublicationDate=currentArticle.getWebPublicationDate();
+
+        // Find the TextView in the list_item.xml layout with the ID publication_date
+        TextView dateTextView = (TextView) listItemView.findViewById(R.id.publication_date);
+        // set date part on the publication_date TextView
+        dateTextView.setText(webPublicationDate.substring(0,webPublicationDate.indexOf('T')));
+
+        // Find the TextView in the list_item.xml layout with the ID publication_time
+        TextView timeTextView = (TextView) listItemView.findViewById(R.id.publication_time);
+        // set the time part on the publication_time TextView
+        timeTextView.setText(webPublicationDate.substring(webPublicationDate.indexOf('T')+1,webPublicationDate.indexOf('Z')));
+
+        // Return the whole list item layout (containing 4 TextViews)
         // so that it can be shown in the ListView
         return listItemView;
     }
-
 }

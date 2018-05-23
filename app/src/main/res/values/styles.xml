@@ -22,4 +22,25 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="date_column">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:textColor">@color/sectionBlue</item>
+        <item name="android:textSize">@dimen/normal</item>
+    </style>
+
+    <style name="article_row">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="section_title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
 </resources>

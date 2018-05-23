@@ -8,12 +8,7 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/android/quakereport/Article.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/android/quakereport/ArticleActivity.java">
+        <entry key="/fragment.java">
           <value>
             <set />
           </value>
@@ -59,16 +54,6 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/layout/earhtquake_list_item.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/values/colors.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/values/strings.xml">
           <value>
             <set />
           </value>

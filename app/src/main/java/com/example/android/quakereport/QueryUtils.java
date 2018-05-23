@@ -16,10 +16,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
- * Helper methods related to requesting and receiving earthquake data from USGS.
+ * Helper methods related to requesting and receiving article.
  */
 public final class QueryUtils {
 
@@ -32,8 +33,7 @@ public final class QueryUtils {
      * This class is only meant to hold static variables and methods, which can be accessed
      * directly from the class name QueryUtils (and an object instance of QueryUtils is not needed).
      */
-    private QueryUtils() {
-    }
+    private QueryUtils() {  }
 
     /**
      * Returns new URL object from the given string URL.
@@ -77,7 +77,7 @@ public final class QueryUtils {
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem retrieving the earthquake JSON results.", e);
+            Log.e(LOG_TAG, "Problem retrieving the article JSON results.", e);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -117,7 +117,7 @@ public final class QueryUtils {
     private static List<Article> extractFeatureFromJson(String articleJSON) {
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(articleJSON)) {
-            return null;
+            return Collections.emptyList();
         }
 
         // Create an empty ArrayList that we can start adding articles to
@@ -147,18 +147,13 @@ public final class QueryUtils {
                 // Get a single article at position i within the list of articles
                 JSONObject currentArticle = articleArray.getJSONObject(i);
 
-                // For a given article, extract the JSONObject associated with the
-                // key called "properties", which represents a list of all properties
-                // for that article.
-                //JSONObject properties = currentArticle.getJSONObject("results");
-
-                // Extract the value for the key called "mag"
+                // Extract the value for the key called "sectionName"
                 String section = currentArticle.getString("sectionName");
 
-                // Extract the value for the key called "place"
+                // Extract the value for the key called "webTitle"
                 String title = currentArticle.getString("webTitle");
 
-                // Extract the value for the key called "time"
+                // Extract the value for the key called "webPublicationDate"
                 String time = currentArticle.getString("webPublicationDate");
 
                 // Extract the value for the key called "url"
@@ -184,15 +179,9 @@ public final class QueryUtils {
     }
 
     /**
-     * Query the USGS dataset and return a list of {@link Article} objects.
+     * Query the Guardian dataset and return a list of {@link Article} objects.
      */
-    public static List<Article> fetchEarthquakeData(String requestUrl) {
-
-        /*try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
+    public static List<Article> fetchArticleData(String requestUrl) {
 
         // Create URL object
         URL url = createUrl(requestUrl);
@@ -207,10 +196,6 @@ public final class QueryUtils {
         }
 
         // Extract relevant fields from the JSON response and create a list of {@link Article}s
-        List<Article> articles = extractFeatureFromJson(jsonResponse);
-
-        // Return the list of {@link Article}s
-        return articles;
+        return extractFeatureFromJson(jsonResponse);
     }
-
 }
