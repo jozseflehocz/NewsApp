@@ -1,13 +1,9 @@
-Quake Report App
+News App
 ===================================
 
-This app displays a list of recent articles in the world
-from the U.S. Geological Survey (USGS) organization.
+News feed app which gives a user regularly-updated news from the internet related to the Guardian API. This is a well-maintained API which returns information in a JSON format.
 
-Used in a Udacity course in the Beginning Android Nanodegree.
-
-More info on the USGS Earthquake API available at:
-https://article.usgs.gov/fdsnws/event/1/
+https://open-platform.theguardian.com/documentation/
 
 Pre-requisites
 --------------
@@ -21,15 +17,6 @@ Getting Started
 
 This sample uses the Gradle build system. To build this project, use the
 "gradlew build" command or use "Import Project" in Android Studio.
-
-Support
--------
-
-- Google+ Community: https://plus.google.com/communities/105153134372062985968
-- Stack Overflow: http://stackoverflow.com/questions/tagged/android
-
-Patches are encouraged, and may be submitted by forking this project and
-submitting a pull request through GitHub. Please see CONTRIBUTING.md for more details.
 
 License
 -------
