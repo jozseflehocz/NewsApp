@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static android.provider.Settings.Global.getString;
-
 /**
  * Helper methods related to requesting and receiving article.
  */
@@ -31,10 +29,10 @@ public final class QueryUtils {
      */
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
 
-    private static int maxreadtimeout =10000;
-    private static int maxconnecttimeout =15000;
-    private static int responsecodesuccess =200;
-    static String webTitle="webTitle";
+    private static int MAX_READ_TIME_OUT =10000;
+    private static int MAX_CONNECT_TIMEOUT =15000;
+    private static int RESPONSE_CODE_SUCCESS =200;
+    private static String WEB_TITLE ="webTitle";
 
 
     /**
@@ -74,14 +72,14 @@ public final class QueryUtils {
         InputStream inputStream = null;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(maxreadtimeout /* milliseconds */);
-            urlConnection.setConnectTimeout(maxconnecttimeout /* milliseconds */);
+            urlConnection.setReadTimeout(MAX_READ_TIME_OUT /* milliseconds */);
+            urlConnection.setConnectTimeout(MAX_CONNECT_TIMEOUT /* milliseconds */);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
             // If the request was successful (response code 200),
             // then read the input stream and parse the response.
-            if (urlConnection.getResponseCode() == responsecodesuccess) {
+            if (urlConnection.getResponseCode() == RESPONSE_CODE_SUCCESS) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
@@ -164,8 +162,8 @@ public final class QueryUtils {
                 // Extract the value for the key called "sectionName"
                 String section = currentArticle.optString("sectionName");
 
-                // Extract the value for the key called "webTitle"
-                String title = currentArticle.optString(webTitle);
+                // Extract the value for the key called "WEB_TITLE"
+                String title = currentArticle.optString(WEB_TITLE);
 
                 // Extract the value for the key called "webPublicationDate"
                 String time = currentArticle.optString("webPublicationDate");
@@ -183,8 +181,8 @@ public final class QueryUtils {
                         int len = tags.length();
                         for (int j = 0; j < len; j++) {
                             JSONObject tag = tags.getJSONObject(j);
-                            if (tag.has(webTitle)) {
-                                author = tag.optString(webTitle);
+                            if (tag.has(WEB_TITLE)) {
+                                author = tag.optString(WEB_TITLE);
                                 authors.add(author);
                             }
                         }

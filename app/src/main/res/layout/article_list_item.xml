@@ -16,7 +16,7 @@
         <TextView
             style="@style/section_title"
             android:id="@+id/section"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@string/sans_serif_medium"
             android:maxLines="1"
             android:textAllCaps="true"
             android:textColor="@color/sectionBlue"
