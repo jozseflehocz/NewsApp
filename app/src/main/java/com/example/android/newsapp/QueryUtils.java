@@ -172,9 +172,9 @@ public final class QueryUtils {
                         int len = tags.length();
                         for (int j = 0; j < len; j++) {
                             JSONObject tag = tags.getJSONObject(j);
-                            if (tag.has("id")) {
-                                author = tag.getString("id");
-                                authors.add(author.substring(author.indexOf('/') + 1));
+                            if (tag.has("webTitle")) {
+                                author = tag.getString("webTitle");
+                                authors.add(author);
                             }
                         }
                     }
