@@ -162,16 +162,16 @@ public final class QueryUtils {
                 JSONObject currentArticle = articleArray.getJSONObject(i);
 
                 // Extract the value for the key called "sectionName"
-                String section = currentArticle.getString("sectionName");
+                String section = currentArticle.optString("sectionName");
 
                 // Extract the value for the key called "webTitle"
-                String title = currentArticle.getString(webTitle);
+                String title = currentArticle.optString(webTitle);
 
                 // Extract the value for the key called "webPublicationDate"
-                String time = currentArticle.getString("webPublicationDate");
+                String time = currentArticle.optString("webPublicationDate");
 
                 // Extract the value for the key called "url"
-                String url = currentArticle.getString("webUrl");
+                String url = currentArticle.optString("webUrl");
 
                 //Extract author information
                 List<String> authors = new ArrayList<>();
@@ -184,7 +184,7 @@ public final class QueryUtils {
                         for (int j = 0; j < len; j++) {
                             JSONObject tag = tags.getJSONObject(j);
                             if (tag.has(webTitle)) {
-                                author = tag.getString(webTitle);
+                                author = tag.optString(webTitle);
                                 authors.add(author);
                             }
                         }
