@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static android.provider.Settings.Global.getString;
+
 /**
  * Helper methods related to requesting and receiving article.
  */
@@ -27,7 +29,12 @@ public final class QueryUtils {
     /**
      * Tag for the log messages
      */
-    public static final String LOG_TAG = QueryUtils.class.getSimpleName();
+    private static final String LOG_TAG = QueryUtils.class.getSimpleName();
+
+    private static int maxreadtimeout =10000;
+    private static int maxconnecttimeout =15000;
+    private static int responsecodesuccess =200;
+    static String webTitle="webTitle";
 
 
     /**
@@ -55,6 +62,7 @@ public final class QueryUtils {
      * Make an HTTP request to the given URL and return a String as the response.
      */
     private static String makeHttpRequest(URL url) throws IOException {
+
         String jsonResponse = "";
 
         // If the URL is null, then return early.
@@ -66,14 +74,14 @@ public final class QueryUtils {
         InputStream inputStream = null;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(10000 /* milliseconds */);
-            urlConnection.setConnectTimeout(15000 /* milliseconds */);
+            urlConnection.setReadTimeout(maxreadtimeout /* milliseconds */);
+            urlConnection.setConnectTimeout(maxconnecttimeout /* milliseconds */);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
             // If the request was successful (response code 200),
             // then read the input stream and parse the response.
-            if (urlConnection.getResponseCode() == 200) {
+            if (urlConnection.getResponseCode() == responsecodesuccess) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
@@ -118,6 +126,9 @@ public final class QueryUtils {
      * parsing the given JSON response.
      */
     private static List<Article> extractFeatureFromJson(String articleJSON) {
+
+
+
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(articleJSON)) {
             return Collections.emptyList();
@@ -154,7 +165,7 @@ public final class QueryUtils {
                 String section = currentArticle.getString("sectionName");
 
                 // Extract the value for the key called "webTitle"
-                String title = currentArticle.getString("webTitle");
+                String title = currentArticle.getString(webTitle);
 
                 // Extract the value for the key called "webPublicationDate"
                 String time = currentArticle.getString("webPublicationDate");
@@ -164,7 +175,7 @@ public final class QueryUtils {
 
                 //Extract author information
                 List<String> authors = new ArrayList<>();
-                String author="";
+                String author;
                 if (currentArticle.has("tags")) {
                     JSONArray tags = currentArticle.getJSONArray("tags");
 
@@ -172,8 +183,8 @@ public final class QueryUtils {
                         int len = tags.length();
                         for (int j = 0; j < len; j++) {
                             JSONObject tag = tags.getJSONObject(j);
-                            if (tag.has("webTitle")) {
-                                author = tag.getString("webTitle");
+                            if (tag.has(webTitle)) {
+                                author = tag.getString(webTitle);
                                 authors.add(author);
                             }
                         }
