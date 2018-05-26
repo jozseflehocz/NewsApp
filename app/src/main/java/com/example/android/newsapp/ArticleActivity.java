@@ -68,11 +68,11 @@ public class ArticleActivity extends AppCompatActivity implements LoaderManager.
         setContentView(R.layout.article_activity);
 
         // Find a reference to the {@link ListView} in the layout
-        ListView articleListView = (ListView) findViewById(R.id.list);
+        ListView articleView = (ListView) findViewById(R.id.list);
 
         // View for empty list
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
-        articleListView.setEmptyView(mEmptyStateTextView);
+        articleView.setEmptyView(mEmptyStateTextView);
 
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
@@ -81,11 +81,11 @@ public class ArticleActivity extends AppCompatActivity implements LoaderManager.
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
-        articleListView.setAdapter(mAdapter);
+        articleView.setAdapter(mAdapter);
 
         // Set an item click listener on the ListView, which sends an intent to a web browser
         // to open a website with more information about the selected article.
-        articleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        articleView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // Find the current earthquake that was clicked on
