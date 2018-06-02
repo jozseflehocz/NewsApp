@@ -28,6 +28,5 @@ public class ArticleLoader extends AsyncTaskLoader<List<Article>> {
         }
 
         return QueryUtils.fetchArticleData(mUrl);
-
     }
 }

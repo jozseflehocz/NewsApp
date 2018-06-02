@@ -64,7 +64,6 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
                     R.layout.article_list_item, parent, false);
         }
 
-
         // Get the {@link AndroidFlavor} object located at this position in the list
         Article currentArticle = getItem(position);
 

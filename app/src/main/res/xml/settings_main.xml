@@ -1,12 +1,28 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings_title">
-
     <EditTextPreference
-        android:defaultValue="@string/settings_category"
+        android:defaultValue="@string/settings_section_name"
         android:inputType="text"
-        android:key="@string/settings_category"
+        android:key="@string/settings_section_name"
         android:selectAllOnFocus="true"
-        android:title="@string/settings_category_label" />
-
+        android:title="@string/settings_section_name_label" />
+    <EditTextPreference
+        android:defaultValue="@string/settings_article_type_default"
+        android:inputType="text"
+        android:key="@string/settings_article_type"
+        android:selectAllOnFocus="true"
+        android:title="@string/settings_article_type_label" />
+    <EditTextPreference
+        android:defaultValue="@string/settings_page_size_default"
+        android:inputType="numberDecimal"
+        android:key="@string/settings_page_size"
+        android:selectAllOnFocus="true"
+        android:title="@string/settings_page_size_label" />
+    <EditTextPreference
+        android:defaultValue="@string/settings_api_key_default"
+        android:inputType="text"
+        android:key="@string/settings_api_key"
+        android:selectAllOnFocus="true"
+        android:title="@string/settings_api_key_label" />
 </PreferenceScreen>

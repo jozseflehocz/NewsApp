@@ -8,12 +8,7 @@
             <set />
           </value>
         </entry>
-        <entry key="/fragment.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/android/newsapp/Article.java">
           <value>
             <set />
           </value>
@@ -23,22 +18,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/android/newsapp/ArticleAdapter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/android/newsapp/ArticleLoader.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/android/newsapp/QueryUtils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/example/android/newsapp/SettingsActivity.java">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/main.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/settings_activity.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/settings_main.xml">
+        <entry key="$PROJECT_DIR$/app/src/main/res/values/arrays.xml">
           <value>
             <set />
           </value>
@@ -49,11 +49,6 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/xml/settings_main.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../ud843-QuakeReport-starting-point/app/src/main/java/com/example/android/quakereport/EarthquakeActivity.java">
           <value>
             <set />
           </value>

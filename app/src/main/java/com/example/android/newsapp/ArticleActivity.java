@@ -18,12 +18,13 @@ package com.example.android.newsapp;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +44,7 @@ public class ArticleActivity extends AppCompatActivity implements LoaderManager.
     /**
      * URL for article data from the website
      */
-    private static final String ARTICLES_URL="https://content.guardianapis.com/search?&show-tags=contributor&api-key=test";
+    private static final String ARTICLES_URL = "https://content.guardianapis.com/search?&show-tags=contributor";
 
     /**
      * Adapter for the list of articles
@@ -56,7 +57,6 @@ public class ArticleActivity extends AppCompatActivity implements LoaderManager.
     private TextView mEmptyStateTextView;
 
     private ProgressBar mProgressBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +78,7 @@ public class ArticleActivity extends AppCompatActivity implements LoaderManager.
 
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-        // Create a new adapter that takes an empty list of earthquakes as input
+        // Create a new adapter that takes an empty list of articles as input
         mAdapter = new ArticleAdapter(this, new ArrayList<Article>());
 
         // Set the adapter on the {@link ListView}
@@ -90,13 +90,14 @@ public class ArticleActivity extends AppCompatActivity implements LoaderManager.
         articleView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // Find the current earthquake that was clicked on
+
+                // Find the current article that was clicked on
                 Article currentArticle = mAdapter.getItem(position);
 
                 // Convert the String URL into a URI object (to pass into the Intent constructor)
                 Uri articleUri = Uri.parse(currentArticle.getUrl());
 
-                // Create a new intent to view the earthquake URI
+                // Create a new intent to view the article URI
                 Intent websiteIntent = new Intent(Intent.ACTION_VIEW, articleUri);
 
                 // Send the intent to launch a new activity
@@ -111,22 +112,60 @@ public class ArticleActivity extends AppCompatActivity implements LoaderManager.
         // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
         // because this activity implements the LoaderCallbacks interface).
 
-        Log.v("onCreate", "loaderManager.initLoader(ARTICLE_LOADER_ID, null, this);");
         if (isConnected) {
             loaderManager.initLoader(ARTICLE_LOADER_ID, null, this);
         } else {
             mEmptyStateTextView.setText(R.string.no_internet_connection);
             mProgressBar.setVisibility(View.GONE);
         }
-
-
     }
 
     @Override
     public Loader<List<Article>> onCreateLoader(int i, Bundle bundle) {
-        // Create a new loader for the given URL
-        Log.v("Loader onCreateLoader", "new ArticleLoader(this, ARTICLES_URL)");
-        return new ArticleLoader(this, ARTICLES_URL);
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // getString retrieves section name from the preferences. The second parameter is the default value for this preference.
+        String sectionName = sharedPrefs.getString(
+                getString(R.string.settings_section_name),
+                getString(R.string.settings_section_name_default));
+
+        // getString retrieves article type from the preferences. The second parameter is the default value for this preference.
+        String articleType = sharedPrefs.getString(
+                getString(R.string.settings_article_type),
+                getString(R.string.settings_article_type_default));
+
+        // getString retrieves page size from the preferences. The second parameter is the default value for this preference.
+        String pageSize = sharedPrefs.getString(
+                getString(R.string.settings_page_size),
+                getString(R.string.settings_page_size_default));
+
+        // getString retrieves api key from the preferences. The second parameter is the default value for this preference.
+        String apiKey = sharedPrefs.getString(
+                getString(R.string.settings_api_key),
+                getString(R.string.settings_api_key_default));
+
+        if (apiKey!=null && apiKey.length()>0) {
+
+            // parse breaks apart the URI string that's passed into its parameter
+            Uri baseUri = Uri.parse(ARTICLES_URL);
+
+            // buildUpon prepares the baseUri that we just parsed so we can add query parameters to it
+            Uri.Builder uriBuilder = baseUri.buildUpon();
+
+            // Append query parameter and its value. For example, the `format=geojson`
+            uriBuilder.appendQueryParameter("page-size", pageSize);
+            uriBuilder.appendQueryParameter("section", sectionName);
+            uriBuilder.appendQueryParameter("type", articleType);
+            uriBuilder.appendQueryParameter("api-key", apiKey);
+
+            return new ArticleLoader(this, uriBuilder.toString());
+        } else {
+            // there is no api key added in settings
+            mEmptyStateTextView.setText(R.string.no_settings_api_key);
+            mProgressBar.setVisibility(View.GONE);
+            return null;
+        }
     }
 
     @Override
@@ -135,8 +174,7 @@ public class ArticleActivity extends AppCompatActivity implements LoaderManager.
         // Set empty state text to display "No articles found."
         mEmptyStateTextView.setText(R.string.no_articles);
 
-        // Clear the adapter of previous earthquake data
-        Log.v("onLoadFinished loader", "mAdapter.clear();");
+        // Clear the adapter of previous article data
         mAdapter.clear();
 
         // If there is a valid list of {@link Article}s, then add them to the adapter's
@@ -150,7 +188,6 @@ public class ArticleActivity extends AppCompatActivity implements LoaderManager.
     @Override
     public void onLoaderReset(Loader<List<Article>> loader) {
         // Loader reset, so we can clear out our existing data.
-        Log.v("onLoadReset loader", "mAdapter.clear();");
         mAdapter.clear();
     }
 

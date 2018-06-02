@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2016 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2016 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -22,7 +21,17 @@
     <string name="sans_serif_medium">sans-serif-medium</string>
     <string name="settings_menu_item">Settings</string>
     <string name="settings_title">News settings</string>
-    <string name="settings_category">Topic Category</string>
-    <string name="settings_category_label">Topic Category</string>
-    <string name="settings_country_of_origin">Country of origin</string>
+    <string name="settings_section_name">news</string>
+    <string name="settings_section_name_default">news</string>
+    <string name="settings_section_name_label">Section</string>
+    <string name="settings_article_type">article</string>
+    <string name="settings_article_type_default">article</string>
+    <string name="settings_article_type_label">Type</string>
+    <string name="settings_page_size">page_size</string>
+    <string name="settings_page_size_default">10</string>
+    <string name="settings_page_size_label">Page size</string>
+    <string name="settings_api_key">api_key</string>
+    <string name="settings_api_key_default">test</string>
+    <string name="settings_api_key_label">API key</string>
+    <string name="no_settings_api_key">Enter API key in settings</string>
 </resources>
